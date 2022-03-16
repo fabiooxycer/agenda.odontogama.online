@@ -1,33 +1,33 @@
 <?php
-    if(!isset($_SESSION)){
-        session_start();
-    }
-    include ('evento/action/conexao.php');
-    $database = new Database();
-    $db = $database->conectar();
-    
-    if (isset($_POST) &&(!empty($_POST))){
-        $usuario = $_POST['usuario'];
-        $senha = $_POST['senha'];
-        $sql = "SELECT *
+if (!isset($_SESSION)) {
+    session_start();
+}
+include('evento/action/conexao.php');
+$database = new Database();
+$db = $database->conectar();
+
+if (isset($_POST) && (!empty($_POST))) {
+    $usuario = $_POST['usuario'];
+    $senha = $_POST['senha'];
+    $sql = "SELECT *
                 FROM usuarios
                 WHERE nome = '$usuario' AND senha = sha1('$senha')";
-        $req = $db->prepare($sql);
-        $req->execute();
-        $linhas = $req->rowCount();
-        if ($linhas == 1) {
-            while ($dados = $req->fetch(PDO::FETCH_ASSOC)) {
-                $id_usuario = $dados['id_usuario'];
-                $nome_usuario = $dados['nome'];
-                $_SESSION['idUsuario'] = $id_usuario;
-                $_SESSION['nomeUsuario'] = $nome_usuario;
-            }
-                header('Location: index.php');
-        }else {
-            //Mensagem de erro no Login
-            header('Location: login.php?erro=1');
+    $req = $db->prepare($sql);
+    $req->execute();
+    $linhas = $req->rowCount();
+    if ($linhas == 1) {
+        while ($dados = $req->fetch(PDO::FETCH_ASSOC)) {
+            $id_usuario = $dados['id_usuario'];
+            $nome_usuario = $dados['nome'];
+            $_SESSION['idUsuario'] = $id_usuario;
+            $_SESSION['nomeUsuario'] = $nome_usuario;
         }
+        header('Location: index.php');
+    } else {
+        //Mensagem de erro no Login
+        header('Location: login.php?erro=1');
     }
+}
 ?>
 
 <script src="js/jquery.js"></script>
@@ -53,46 +53,51 @@
 </head>
 
 <body>
-<div class="fundoLogin">
-<div class="container">
+    <div class="fundoLogin">
+        <div class="container">
 
 
-    <div class="row">
-	
-        <div class="col-md-4 col-md-offset-4">
-            <div class="login-panel panel panel-default">
-                <div class="panel-heading2">
-                    <h3 class="panel-title"></h3>
-                </div>
-                <div class="panel-body">
+            <div class="row">
 
-                    <!-- Exibir mensagem de erro no login -->
-                    <?php
-                    if(isset($_GET['erro']) && $_GET['erro']==1) {
-                        echo "<div style='text-align: center' class=\"alert alert-danger\" role=\"alert\">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading2">
+                            <h3 class="panel-title"></h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <!-- Exibir mensagem de erro no login -->
+                            <?php
+                            if (isset($_GET['erro']) && $_GET['erro'] == 1) {
+                                echo "<div style='text-align: center' class=\"alert alert-danger\" role=\"alert\">
                         <b>Usuario ou senha Incorretos!</b>
                       </div>";
-                    }
-                    ?>
+                            }
+                            ?>
 
-                    <form role="form" method="post">
-                        <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Usuario" name="usuario" type="username" required>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Senha" name="senha" type="password" required>
-                            </div>
-                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Login">
-                        </fieldset>
-                    </form>
+                            <form role="form" method="post">
+                                <div align="center">
+                                    <img src="images/logo.png">
+                                    <br>
+                                    <h3>Sistema de Agendamento</h3>
+                                </div><br>
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Usuario" name="usuario" type="username" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Senha" name="senha" type="password" required>
+                                    </div>
+                                    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Login">
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
-    
-	</div>
-</div>
-</div>
+    </div>
 
 </body>
 
