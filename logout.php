@@ -5,7 +5,7 @@ if(!isset($_SESSION)){
 
 if(isset($_SESSION)){
     session_destroy();
-    echo "Saindo...";
+    // echo "Saindo...";
     header('Location: login.php');
 }
 ?>
