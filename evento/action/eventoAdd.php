@@ -23,7 +23,7 @@
 		
 		$sql = "INSERT INTO eventos(fk_id_usuario, titulo, descricao, inicio, termino, cor) values ('$id_usuario', '$titulo', '$descricao', '$inicio', '$termino', '$cor')";
 		
-		echo $sql;
+		//echo $sql;
 		
 		$query = $db->prepare( $sql );
 		if ($query == false) {
