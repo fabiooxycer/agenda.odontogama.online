@@ -1,0 +1,87 @@
+<?php
+   
+	include "../../lib/config.inc.php";
+	include "../../lib/func.inc.php";
+	include "../../lib/classes.inc.php";
+	require_once '../../lang/'.$idioma.'.php';
+	header("Content-type: text/html; charset=ISO-8859-1", true);
+	if(!checklog()) {
+        echo '<script>Ajax("wallpapers/index", "conteudo", "");</script>';
+        die();
+	}
+	if(!verifica_nivel('agenda', 'L')) {
+        echo $LANG['general']['you_tried_to_access_a_restricted_area'];
+        die();
+    }
+	if($_GET[confirm_del] == "delete") {
+		mysql_query("DELETE FROM `arquivos` WHERE `nome` = '".$_GET[codigo]."'") or die(mysql_error());
+	}
+?>
+<div class="panel panel-default">
+  <div class="panel-heading"><span class="glyphicon glyphicon-folder-open"></span> Arquivos da Clínica</div>
+  <div class="panel-body">
+  
+<?php
+    if(verifica_nivel('arquivos_clinica', 'I')) {
+?>
+  <form id="form2" name="form2" method="POST" action="arquivos/daclinica/incluir_ajax.php" enctype="multipart/form-data" target="iframe_upload"> <?php/*onsubmit="Ajax('arquivos/daclinica/arquivos', 'conteudo', '');">*/?>
+  <table class="table">
+    <tr>
+      <td>
+        <!--<button class="btn btn-primary" type="button">
+          <span class="glyphicon glyphicon-upload"></span> <b>Incluir Arquivo</b>-->
+          <input type="file" class="btn btn-primary" name="arquivo" style="width:169px;" stsyle="opacity:0;width:130px;margin-top:-20px;height:20px;position:absolute;" id="arquivo" onchange="getElementById('filename').value=this.value">
+        <!--</button>-->
+        <input type="hidden" value="" name="filename" id="filename">
+      </td>
+    </tr>
+      <tr>
+      <td><?php echo $LANG['clinic_files']['description']?> <br />
+        <input type="text" size="50" name="descricao" id="descricao" class="form-control">
+      </td>
+      <td> <br />
+        <input type="submit" name="Salvar" id="Salvar" value="<?php echo $LANG['clinic_files']['save']?>" class="btn btn-success">
+      </td>
+    </tr>
+  </table>
+  </form>
+  <iframe name="iframe_upload" width="1" height="1" frameborder="0" scrolling="No"></iframe>
+<?php
+    }
+?>
+<div class="conteudo" id="table dados"><br>
+  <table class="table table-hover">
+    <thead>
+      <th><?php echo $LANG['clinic_files']['description']?></th>
+      <th><?php echo $LANG['clinic_files']['type']?></th>
+      <th><?php echo $LANG['clinic_files']['size']?></th>
+      <th><?php echo $LANG['clinic_files']['view']?></th>
+      <th><?php echo $LANG['clinic_files']['delete']?></th>
+    </thead>
+  
+<?php
+	$query = mysql_query("SELECT * FROM `arquivos` ORDER BY `descricao` ASC");
+	$i = 0;
+	$par = "F0F0F0";
+	$impar = "F8F8F8";
+	while($row = mysql_fetch_array($query)) {
+		if($i % 2 == 0) {
+			$odev = $par;
+		} else {
+			$odev = $impar;
+		}
+?>
+    <tr>
+      <td><?php echo $row[descricao]?></td>
+      <td><?php echo pega_tipo($row[nome])?></td>
+      <td><?php echo format_size($row[tamanho])?></td>
+      <td><?php echo ((verifica_nivel('arquivos_clinica', 'V'))?'<a href="arquivos/daclinica/files/'.$row[nome].'" target="_blank"><button class="btn btn-default" title="Visualizar"><span class="glyphicon glyphicon-eye-open"></span></button></a>':'')?></td>
+      <td><?php echo ((verifica_nivel('arquivos_clinica', 'E'))?'<a href="javascript:Ajax(\'arquivos/daclinica/arquivos\', \'conteudo\', \'codigo='.$row[nome].'" onclick="return confirmLink(this)"><button class="btn btn-danger" title="Exluir"><span class="glyphicon glyphicon-trash"></span></button></a>':'')?></td>
+    </tr>
+<?php
+		$i++;
+	}
+?>
+  </table>
+  <div id="pesquisa"></div>
+</div>

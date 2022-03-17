@@ -1,0 +1,14 @@
+#menuResp{
+	display: none;
+}
+
+@media only screen and (min-width : 100px) and (max-width : 800px){
+
+	#menu, #rodape{
+		display: none;
+	}
+	#menuResp{
+		display: block;
+	}
+
+}

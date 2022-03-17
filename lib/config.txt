@@ -1,0 +1,48 @@
+<?php
+   
+    define('PATH_INCLUDE', '');
+
+    // Versão desta liberação
+    $version = '6.1';
+
+    // Variáveis do conexão com o BD
+    $server = 'localhost';
+    $user = 'root';
+    $pass = '';
+    $bd = 'gerenciador';
+  
+    // Quantidade de páginas exibidas nas paginações
+    define('PG_MAX', 15);
+    // Quantidade de páginas exibidas nas paginações menores
+    define('PG_MAX_MEN', 10);
+    // Quantidade de zeros para completar a numeração dos boletos
+    define('ZEROS', 11);
+  
+    // Define se está instalado ou não
+    $install = true;
+
+    /*mysql_connect($server, $user, $pass) or die(mysql_error());
+
+    mysql_select_db($bd)or die(mysql_error());
+
+    $licenca = mysql_query("SELECT chave FROM dados_clinica")or die(mysql_error());
+
+    $getLicenca = mysql_fetch_row($licenca);
+
+    $cURL = curl_init("http://odontosystem.ddns.net/odonto/validar.php?licenca=".$getLicenca[0]);
+    
+    curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($cURL, CURLOPT_FOLLOWLOCATION, true );
+    
+    $resultado = curl_exec($cURL);
+
+
+    if($resultado != "sucesso" && $_SERVER['PHP_SELF'] != "/insereLicenca.php")
+    {
+        if($resultado == "") $resultado = "conexao";
+        echo '<script type="text/javascript">window.location="insereLicenca.php?motivo='.$resultado.'";</script>';
+        exit;
+    }*/
+
+
+    curl_close($cURL);
