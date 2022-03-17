@@ -1,9 +1,0 @@
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteCond %{HTTP_HOST} ^odontogama.online [NC]
-  #RewriteRule ^(.*)$ https://odontogama.online/$1 [L,R=301]
-
-# PÁGINAS
-  #RewriteRule ^inicio/?$ index.php [NC,L]
-  
-</IfModule>
